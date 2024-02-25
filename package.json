@@ -1,0 +1,21 @@
+{
+  "name": "custodial-wallet-app",
+  "version": "1.0.0",
+  "description": "## Project",
+  "main": "index.js",
+  "type": "module",
+  "author": "Daniel Fayemi",
+  "license": "ISC",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "start": "concurrently \"npm run start --workspace=server\" \"npm run start --workspace=client\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "eslint": "^8.56.0"
+  }
+}

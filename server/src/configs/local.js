@@ -1,0 +1,29 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
+export default {
+  IS_PRODUCTION_ENV: false,
+  IS_DEVELOPMENT_ENV: false,
+
+  ENV: process.env.NODE_ENV,
+
+  PORT: process.env.PORT,
+
+  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_EXPIRATION_TIME: process.env.JWT_EXPIRATION_TIME,
+
+  PLAID_ENV: process.env.PLAID_ENV,
+  PLAID_SECRET: process.env.PLAID_SECRET,
+  PLAID_PRODUCTS: process.env.PLAID_PRODUCTS,
+  PLAID_CLIENT_ID: process.env.PLAID_CLIENT_ID,
+  PLAID_COUNTRY_CODES: process.env.PLAID_COUNTRY_CODES,
+
+  ENCRYPTION_IV: process.env.ENCRYPTION_IV,
+  ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
+  ENCRYPTION_METHOD: process.env.ENCRYPTION_METHOD,
+
+  REGTEST_API_URL: process.env.REGTEST_API_URL,
+  REGTEST_API_PASS: process.env.REGTEST_API_PASS,
+
+  BITCOIN_HOTWALLET_PRIVATE_KEY: process.env.BITCOIN_HOTWALLET_PRIVATE_KEY
+}
