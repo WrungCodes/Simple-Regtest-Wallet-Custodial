@@ -2,10 +2,6 @@
   "name": "daniel",
   "version": "0.1.0",
   "private": true,
-  "options": {
-    "allowedHosts": ["localhost", ".localhost", "https://64.23.202.246", "http://64.23.202.246", "64.23.202.246"],
-    "proxy": "https://64.23.202.246:4000"
-  },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
     "@testing-library/jest-dom": "^5.14.1",

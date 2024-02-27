@@ -16,27 +16,27 @@ const __dirname = path.dirname(__filename)
 
 const app = express()
 
+app.enabled('trust proxy')
 app.use(cors())
 app.use(function (req, res, next) {
-  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp')
-  res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none')
-  res.setHeader('Access-Control-Allow-Origin', 'http://64.23.202.246:3000')
-  res.setHeader('Access-Control-Allow-Headers', 'http://64.23.202.246:3000')
-  // res.setHeader('Access-Control-Allow-Credentials', true)
+  // res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp')
+  // res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none')
+  // res.setHeader('Access-Control-Allow-Origin', 'http://64.23.202.246:3000')
+  // res.setHeader('Access-Control-Allow-Headers', 'http://64.23.202.246:3000')
   next()
 })
 
-app.use(helmet())
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      scriptSrc: ["'self'", 'https://cdn.plaid.com/link/v2/stable/link-initialize.js'],
-      defaultSrc: ["'self'", 'https://cdn.plaid.com/'],
-      frameSrc: ["'self'", 'https://cdn.plaid.com/'],
-      connectSrc: ["'self'", 'https://sandbox.plaid.com']
-    }
-  })
-)
+// app.use(helmet())
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       scriptSrc: ["'self'", 'https://cdn.plaid.com/link/v2/stable/link-initialize.js'],
+//       defaultSrc: ["'self'", 'https://cdn.plaid.com/'],
+//       frameSrc: ["'self'", 'https://cdn.plaid.com/'],
+//       connectSrc: ["'self'", 'https://sandbox.plaid.com']
+//     }
+//   })
+// )
 
 app.use(express.json())
 app.use(cookieParser())
@@ -53,13 +53,13 @@ app.use(passport.initialize())
 app.use(morgan('combined'))
 
 app.use(express.static(path.join(__dirname, '../../public/build'), {
-  setHeaders: (res) => {
-    res.set('Access-Control-Allow-Origin', '*')
-    res.set('Cross-Origin-Opener-Policy', 'unsafe-none')
-    // res.set(' Origin-Agent-Cluster', '?1');
-    res.set('Cross-Origin-Resource-Policy', 'same-origin')
-    res.set('Cross-Origin-Embedder-Policy', 'unsafe-none')
-  }
+  // setHeaders: (res) => {
+  //   res.set('Access-Control-Allow-Origin', '*')
+  //   res.set('Cross-Origin-Opener-Policy', 'unsafe-none')
+  //   // res.set(' Origin-Agent-Cluster', '?1');
+  //   res.set('Cross-Origin-Resource-Policy', 'same-origin')
+  //   res.set('Cross-Origin-Embedder-Policy', 'unsafe-none')
+  // }
 }))
 
 app.get('/test', (req, res) => res.send({ message: 'Server running' }))
