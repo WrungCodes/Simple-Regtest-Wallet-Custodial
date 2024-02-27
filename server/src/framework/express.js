@@ -55,7 +55,7 @@ app.use(express.static(path.join(__dirname, '../../public/build'), {
   setHeaders: (res) => {
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Cross-Origin-Opener-Policy', 'unsafe-none');
-    res.set(' Origin-Agent-Cluster', '?1');
+    // res.set(' Origin-Agent-Cluster', '?1');
     res.set('Cross-Origin-Resource-Policy', 'cross-origin');
     res.set('Cross-Origin-Embedder-Policy', 'unsafe-nonep');
   }
