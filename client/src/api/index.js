@@ -26,7 +26,7 @@ const errorHandler = {
         return;
       }
 
-      toast.error(data.error && data.error.message);
+      toast.error(data && data.error && data.error.message);
     }
   },
 };

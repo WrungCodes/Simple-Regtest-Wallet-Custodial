@@ -17,13 +17,13 @@ const __dirname = path.dirname(__filename)
 const app = express()
 
 app.use(cors())
-// app.use(function (req, res, next) {
-//   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp')
-//   res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none')
-//   res.setHeader('Access-Control-Allow-Origin', '*')
-//   res.setHeader('Access-Control-Allow-Headers', '*')
-//   next()
-// })
+app.use(function (req, res, next) {
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp')
+  res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none')
+  res.setHeader('Access-Control-Allow-Origin', 'http://64.23.202.246:3000')
+  res.setHeader('Access-Control-Allow-Headers', 'http://64.23.202.246:3000')
+  next()
+})
 
 app.use(helmet())
 app.use(
