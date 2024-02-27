@@ -19,9 +19,9 @@ const app = express()
 app.use(cors())
 app.use(function(req, res, next) {
   res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-  res.setHeader("Cross-Origin-Opener-Policy", "localhost");
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.setHeader('Access-Control-Allow-Headers', 'http://localhost:3000');
+  res.setHeader("Cross-Origin-Opener-Policy", "unsafe-none");
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4000');
+  res.setHeader('Access-Control-Allow-Headers', 'http://localhost:4000');
   next();
 });
 
