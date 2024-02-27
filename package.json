@@ -12,6 +12,7 @@
     "client"
   ],
   "scripts": {
+    "begin": "concurrently \"npm run start --workspace=server\" \"npm run start --workspace=client\"",
     "start": "npm run start --workspace=server",
     "build": "npm run build --workspace=client",
     "postbuild": "rm -rf server/public/build/* && mv client/build server/public/"
