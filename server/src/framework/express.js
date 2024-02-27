@@ -20,8 +20,9 @@ app.use(cors())
 app.use(function (req, res, next) {
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp')
   res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none')
-  res.setHeader('Access-Control-Allow-Origin', 'http://64.23.202.246:4000')
-  res.setHeader('Access-Control-Allow-Headers', 'http://64.23.202.246:4000')
+  res.setHeader('Access-Control-Allow-Origin', 'http://64.23.202.246:3000')
+  res.setHeader('Access-Control-Allow-Headers', 'http://64.23.202.246:3000')
+  res.setHeader('Access-Control-Allow-Credentials', true)
   next()
 })
 
