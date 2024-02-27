@@ -41,6 +41,7 @@ export const api = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["GeneralData"],
       ...errorHandler,
     }),
 
@@ -50,6 +51,7 @@ export const api = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["GeneralData"],
       ...errorHandler,
     }),
 
@@ -104,6 +106,7 @@ export const api = createApi({
         url: "/auth/logout",
         method: "POST",
       }),
+      invalidatesTags: ["GeneralData"],
       ...errorHandler,
     }),
   }),
