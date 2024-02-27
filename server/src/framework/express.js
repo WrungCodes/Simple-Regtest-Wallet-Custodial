@@ -17,6 +17,12 @@ const __dirname = path.dirname(__filename)
 const app = express()
 
 app.use(cors())
+app.use(function(req, res, next) {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
+
 app.use(helmet())
 app.use(
   helmet.contentSecurityPolicy({
