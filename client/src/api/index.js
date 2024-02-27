@@ -1,14 +1,39 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import router from "../routes";
+import { toast } from "react-toastify";
 
-// const headers = new Headers();
+const errorHandler = {
+  async onQueryStarted(
+    arg,
+    {
+      dispatch,
+      getState,
+      extra,
+      requestId,
+      queryFulfilled,
+      getCacheEntry,
+      updateCachedData,
+    }
+  ) {
+    try {
+      await queryFulfilled;
+    } catch (e) {
+      const { status, data } = e.error;
 
-// headers.append("Access-Control-Allow-Origin", "*");
-// headers.append("Cross-Origin-Opener-Policy:", "cross-origin");
-// headers.append("Cross-Origin-Resource-Policy", "cross-origin");
+      if (status === 401) {
+        router.navigate("/login");
+
+        return;
+      }
+
+      toast.error(data.error.message);
+    }
+  },
+};
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_BASE_URL }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "GeneralData"],
   endpoints: (build) => ({
     registerUser: build.mutation({
       query: (body) => ({
@@ -16,6 +41,7 @@ export const api = createApi({
         method: "POST",
         body,
       }),
+      ...errorHandler,
     }),
 
     loginUser: build.mutation({
@@ -24,6 +50,7 @@ export const api = createApi({
         method: "POST",
         body,
       }),
+      ...errorHandler,
     }),
 
     getAllData: build.query({
@@ -31,6 +58,8 @@ export const api = createApi({
         url: "/",
         credentials: "include",
       }),
+      providesTags: ["GeneralData"],
+      ...errorHandler,
     }),
 
     initializeBankLink: build.mutation({
@@ -38,6 +67,7 @@ export const api = createApi({
         method: "GET",
         url: "/bank/link/begin",
       }),
+      ...errorHandler,
     }),
 
     addPublicToken: build.mutation({
@@ -46,6 +76,35 @@ export const api = createApi({
         url: "/bank/link/confirm",
         body,
       }),
+      ...errorHandler,
+
+      invalidatesTags: ["GeneralData"],
+    }),
+
+    fetchRates: build.query({
+      query: (id) => ({
+        url: `/asset/${id}/rate`,
+      }),
+      ...errorHandler,
+    }),
+
+    tradeAsset: build.mutation({
+      query: (body) => ({
+        url: "/trade",
+        method: "POST",
+        body,
+      }),
+      ...errorHandler,
+
+      invalidatesTags: ["GeneralData"],
+    }),
+
+    logoutUser: build.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
+      ...errorHandler,
     }),
   }),
 });
@@ -56,4 +115,7 @@ export const {
   useGetAllDataQuery,
   useInitializeBankLinkMutation,
   useAddPublicTokenMutation,
+  useFetchRatesQuery,
+  useTradeAssetMutation,
+  useLogoutUserMutation,
 } = api;

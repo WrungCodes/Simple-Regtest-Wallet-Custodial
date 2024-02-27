@@ -8,7 +8,9 @@ const WalletDetails = ({ wallet = {} }) => {
         </p>
         <p className="text-xs text-right">
           Balance: <br />
-          <b className="text-white">{wallet.balance}</b>
+          <b className="text-white">
+            {wallet.balance} {wallet.asset && wallet.asset.symbol}
+          </b>
         </p>
       </div>
     </div>

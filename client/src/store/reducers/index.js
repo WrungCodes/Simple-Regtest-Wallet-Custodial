@@ -1,26 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api";
 
-const user = createSlice({
+const transaction = createSlice({
   name: "UserSlice",
   initialState: {
-    name: "Dan",
+    bankId: null,
   },
   reducers: {
-    updateUser(state, action) {
-      state = {
-        ...state,
-        ...action.payload,
-      };
+    setBankId(state, action) {
+      state.bankId = action.payload;
     },
   },
 });
 
 const rootReducer = {
-  user: user.reducer,
+  transaction: transaction.reducer,
   [api.reducerPath]: api.reducer,
 };
 
-export const { updateUser } = user.actions;
+export const { setBankId } = transaction.actions;
 
 export default rootReducer;

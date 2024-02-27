@@ -12,11 +12,10 @@ const LoginPage = () => {
     async (data) => {
       try {
         const response = await loginUser(data);
-        console.log(response);
-
-        navigate("/");
+        if (!response.error) {
+          navigate("/");
+        }
       } catch (e) {
-        console.log(e);
       }
     },
     [loginUser, navigate]

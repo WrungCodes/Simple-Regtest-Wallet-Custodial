@@ -4,11 +4,7 @@ import { api } from "../api";
 
 export const store = configureStore({
   reducer: rootReducer,
-  preloadedState: {
-    user: {
-      name: "Dan",
-    },
-  },
+  preloadedState: {},
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

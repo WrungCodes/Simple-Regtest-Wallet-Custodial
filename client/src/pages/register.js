@@ -5,21 +5,18 @@ import { useRegisterUserMutation } from "../api";
 import { useCallback } from "react";
 
 const RegisterPage = () => {
-  const [registerUser, result] = useRegisterUserMutation();
+  const [registerUser] = useRegisterUserMutation();
   const navigate = useNavigate();
 
   const handleRegisterUser = useCallback(
     async (data) => {
       try {
-        const response = await registerUser(data);
-        console.log(result, response);
-
-        navigate("/login");
+        await registerUser(data);
+        navigate("/");
       } catch (e) {
-        console.log(e);
       }
     },
-    [registerUser, result, navigate]
+    [registerUser, navigate]
   );
 
   return (

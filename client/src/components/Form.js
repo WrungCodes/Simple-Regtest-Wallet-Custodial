@@ -51,9 +51,8 @@ const FormUI = ({
                   {isSubmitting ? (
                     <span className="loading loading-spinner loading-md"></span>
                   ) : (
-                    ""
-                  )}{" "}
-                  {submitBtnText}
+                    submitBtnText
+                  )}
                 </button>
               </div>
             </>

@@ -5,6 +5,9 @@ coverage
 # Build/Production
 /client/build
 
+# Build/Production
+/server/public/build
+
 # Environment variables
 *.env*
 !.env.example
