@@ -8,12 +8,12 @@ import asyncHandler from 'express-async-handler'
 import { authMiddleware } from '../middlewares/auth.middleware.js'
 import plaidImplementation from '../../external/plaid.js'
 
-export default function bankRouter (express) {
-  const database = databaseSelector()
-  const bankRepositoryImpl = bankRepository(database.repository().bank)
-  const bankServiceImpl = bankService(bankRepositoryImpl)
-  const plaidImplem = plaidImplementation()
+const database = databaseSelector()
+const bankRepositoryImpl = bankRepository(database.repository().bank)
+const bankServiceImpl = bankService(bankRepositoryImpl)
+const plaidImplem = plaidImplementation()
 
+export default function bankRouter (express) {
   const router = express.Router()
 
   const controller = bankController(bankServiceImpl, plaidImplem)

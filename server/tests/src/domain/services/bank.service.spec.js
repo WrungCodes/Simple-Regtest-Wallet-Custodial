@@ -8,6 +8,7 @@ describe('bankService', () => {
     mockBankRepository = {
       add: jest.fn(),
       findById: jest.fn(),
+      addMultiple: jest.fn(),
       findByUserId: jest.fn()
     }
   })
@@ -25,6 +26,22 @@ describe('bankService', () => {
       mockBankRepository.add.mockRejectedValue(new Error('Insertion failed'))
       const service = bankService(mockBankRepository)
       await expect(service.createBank(sampleBank)).rejects.toThrow(EntityInsertionIntoDatabaseFailed)
+    })
+  })
+
+  describe('createMultipleBank', () => {
+    const sampleBanks = [{ id: 1, name: 'Test Bank' }, { id: 2, name: 'Test Bank 2' }]
+
+    it('successfully inserts a bank', async () => {
+      mockBankRepository.addMultiple.mockResolvedValue(true)
+      const service = bankService(mockBankRepository)
+      await expect(service.createMultipleBank(sampleBanks)).resolves.not.toThrow(EntityInsertionIntoDatabaseFailed)
+    })
+
+    it('throws an error when insertion fails', async () => {
+      mockBankRepository.addMultiple.mockResolvedValue(false)
+      const service = bankService(mockBankRepository)
+      await expect(service.createMultipleBank(sampleBanks)).rejects.toThrow(EntityInsertionIntoDatabaseFailed)
     })
   })
 

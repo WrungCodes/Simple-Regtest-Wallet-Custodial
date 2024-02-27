@@ -50,7 +50,7 @@ describe('processTradeTransfer', () => {
     ).execute(userId, assetId, bankId, amount)
 
     expect(getOrGenerateUserWalletAndAddressUseCase.execute).toHaveBeenCalledWith(userId, assetId)
-    expect(getBankBalanceUsecase.execute).toHaveBeenCalledWith(bankId)
+    expect(getBankBalanceUsecase.execute).toHaveBeenCalledWith(userId, bankId)
     expect(chargeService.createCharge).toHaveBeenCalledWith({ amount, bankId, currency: 'USD', timestamp: 1708787908890, userId })
     expect(transferService.createTransfer).toHaveBeenCalledWith({
       assetId,

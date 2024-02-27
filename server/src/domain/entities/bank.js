@@ -1,7 +1,7 @@
-export default function Bank (id, service, userId, accessToken, itemId) {
+export default function Bank (id, accountId, userId, accessToken, itemId) {
   return Object.freeze({
     id,
-    service,
+    accountId,
     userId,
     accessToken,
     itemId

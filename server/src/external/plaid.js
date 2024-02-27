@@ -1,7 +1,6 @@
 import { Configuration, PlaidApi, PlaidEnvironments, Products } from 'plaid'
 import config from '../configs/index.js'
-import { GetAccountBalanceError, InvalidPlaidPublicTokenError, UnexpectedPlaidRequestError } from '../errors/plaid.error.js'
-import math from './math.js'
+import { InvalidPlaidPublicTokenError, UnexpectedPlaidRequestError } from '../errors/plaid.error.js'
 
 const configuration = new Configuration({
   basePath: PlaidEnvironments.sandbox,
@@ -48,11 +47,10 @@ export default function plaidImplementation () {
         public_token: publicToken
       })
       return {
-        accessToken: tokenResponse.access_token,
-        itemId: tokenResponse.item_id
+        accessToken: tokenResponse.data.access_token,
+        itemId: tokenResponse.data.item_id
       }
     } catch (error) {
-      console.error(error.response)
       if (error.response?.data?.error_type === 'INVALID_INPUT') {
         throw new InvalidPlaidPublicTokenError(422, 'Invalid public token')
       }
@@ -64,7 +62,15 @@ export default function plaidImplementation () {
     const accountResponse = await plaidClient.accountsGet({
       access_token: accessToken
     })
-    return { accounts: accountResponse.accounts }
+    return { accounts: accountResponse.data.accounts }
+  }
+
+  const getAccountsDataWithAccountIdFilter = async (accessToken, accountId) => {
+    const accountResponse = await plaidClient.accountsGet({
+      access_token: accessToken,
+      options: { account_ids: [accountId] }
+    })
+    return accountResponse.data.accounts[0]
   }
 
   const getAccountBalances = async (accessToken) => {
@@ -72,21 +78,16 @@ export default function plaidImplementation () {
       access_token: accessToken
     })
 
-    return balanceResponse
+    return { accounts: balanceResponse.data.accounts }
   }
 
-  const sumAllAvailableBalances = (accountsGetResponse) => {
-    if (!Array.isArray(accountsGetResponse.accounts)) {
-      throw new GetAccountBalanceError(422, 'Invalid accounts data')
-    }
+  const getAccountBalancesWithAccountIdFilter = async (accessToken, accountId) => {
+    const balanceResponse = await plaidClient.accountsBalanceGet({
+      access_token: accessToken,
+      options: { account_ids: [accountId] }
+    })
 
-    const totalAvailableBalance = accountsGetResponse.accounts.reduce((total, account) => {
-      if (account.balances && typeof account.balances.available === 'number') {
-        return math.add(total, account.balances.available)
-      }
-      return total
-    }, 0)
-    return totalAvailableBalance
+    return balanceResponse.data.accounts[0]
   }
 
   return {
@@ -94,6 +95,7 @@ export default function plaidImplementation () {
     createLinkToken,
     getAccountsData,
     getAccountBalances,
-    sumAllAvailableBalances
+    getAccountsDataWithAccountIdFilter,
+    getAccountBalancesWithAccountIdFilter
   }
 }

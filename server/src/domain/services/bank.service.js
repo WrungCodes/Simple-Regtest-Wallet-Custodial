@@ -10,6 +10,13 @@ export default function bankService (bankRepository) {
     }
   }
 
+  const createMultipleBank = async (banks) => {
+    const isInsertedBanks = await bankRepository.addMultiple(banks)
+    if (!isInsertedBanks) {
+      throw new EntityInsertionIntoDatabaseFailed(500, 'Unable to insert Banks into database')
+    }
+  }
+
   const retriveBankById = async (id) => {
     const bank = await bankRepository.findById(id)
     if (!bank) {
@@ -26,6 +33,7 @@ export default function bankService (bankRepository) {
   return Object.freeze({
     createBank,
     retriveBankById,
+    createMultipleBank,
     retriveAllUserBanks
   })
 }

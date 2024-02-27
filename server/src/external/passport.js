@@ -18,8 +18,9 @@ export default function passportConfiguration () {
     const { expiration } = jwtPayload
     if (Date.now() > expiration) {
       done(new UnauthorizedUserError(401, 'Unauthorized User'), false)
+    } else {
+      done(null, jwtPayload)
     }
-    done(null, jwtPayload)
   }
 
   const jwtOption = {

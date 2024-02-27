@@ -22,35 +22,35 @@ import cryptoStrategyImplementation from '../../external/crypto-strategy/index.j
 import plaidImplementation from '../../external/plaid.js'
 import config from '../../configs/index.js'
 
+const database = databaseSelector()
+const dbRepository = database.repository()
+
+const assetRepositoryImpl = assetRepository(dbRepository.asset)
+const assetServiceImpl = assetService(assetRepositoryImpl)
+
+const walletRepositoryImpl = walletRepository(dbRepository.wallet)
+const walletServiceImpl = walletService(walletRepositoryImpl)
+
+const addressRepositoryImpl = addressRepository(dbRepository.address)
+const addressServiceImpl = addressService(addressRepositoryImpl)
+
+const bankRepositoryImpl = bankRepository(database.repository().bank)
+const bankServiceImpl = bankService(bankRepositoryImpl)
+
+const transferRepositoryImpl = transferRepository(dbRepository.transfer)
+const transferServiceImpl = transferService(transferRepositoryImpl)
+
+const chargeRepositoryImpl = chargeRepository(dbRepository.charge)
+const chargeServiceImpl = chargeService(chargeRepositoryImpl)
+
+const plaidImplem = plaidImplementation()
+
+const encryptionImplem = encryptionImplementation(config.ENCRYPTION_KEY, config.ENCRYPTION_IV, config.ENCRYPTION_METHOD)
+const cryptoStrategyImplem = cryptoStrategyImplementation()
+
+const rateImpl = rateImplementationStrategy()
+
 export default function tradeRouter (express) {
-  const database = databaseSelector()
-  const dbRepository = database.repository()
-
-  const assetRepositoryImpl = assetRepository(dbRepository.asset)
-  const assetServiceImpl = assetService(assetRepositoryImpl)
-
-  const walletRepositoryImpl = walletRepository(dbRepository.wallet)
-  const walletServiceImpl = walletService(walletRepositoryImpl)
-
-  const addressRepositoryImpl = addressRepository(dbRepository.address)
-  const addressServiceImpl = addressService(addressRepositoryImpl)
-
-  const bankRepositoryImpl = bankRepository(database.repository().bank)
-  const bankServiceImpl = bankService(bankRepositoryImpl)
-
-  const transferRepositoryImpl = transferRepository(dbRepository.transfer)
-  const transferServiceImpl = transferService(transferRepositoryImpl)
-
-  const chargeRepositoryImpl = chargeRepository(dbRepository.charge)
-  const chargeServiceImpl = chargeService(chargeRepositoryImpl)
-
-  const plaidImplem = plaidImplementation()
-
-  const encryptionImplem = encryptionImplementation(config.ENCRYPTION_KEY, config.ENCRYPTION_IV, config.ENCRYPTION_METHOD)
-  const cryptoStrategyImplem = cryptoStrategyImplementation()
-
-  const rateImpl = rateImplementationStrategy()
-
   const router = express.Router()
 
   const controller = tradeController(

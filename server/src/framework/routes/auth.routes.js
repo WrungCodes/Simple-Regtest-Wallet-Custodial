@@ -9,13 +9,13 @@ import { authMiddleware } from '../middlewares/auth.middleware.js'
 import passwordImplementation from '../../external/password.js'
 import jwtCookieImplementation from '../../external/jwt.js'
 
-export default function authRouter (express) {
-  const database = databaseSelector()
-  const userRepositoryImpl = userRepository(database.repository().user)
-  const userServiceImpl = userService(userRepositoryImpl)
-  const passwordImpl = passwordImplementation()
-  const jwtCookieImpl = jwtCookieImplementation()
+const database = databaseSelector()
+const userRepositoryImpl = userRepository(database.repository().user)
+const userServiceImpl = userService(userRepositoryImpl)
+const passwordImpl = passwordImplementation()
+const jwtCookieImpl = jwtCookieImplementation()
 
+export default function authRouter (express) {
   const router = express.Router()
 
   const controller = authController(userServiceImpl, passwordImpl, jwtCookieImpl)

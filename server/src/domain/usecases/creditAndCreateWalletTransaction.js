@@ -28,7 +28,7 @@ export default function creditAndCreateWalletTransaction (walletService, address
           walletId,
           hash: transaction.hash,
           vout: transaction.vout,
-          amount: transaction.amount
+          amount: transaction.value
         }
       }
       throw error
@@ -37,6 +37,7 @@ export default function creditAndCreateWalletTransaction (walletService, address
 
   const updateWalletWithNewBalanceAndCreateWalletTransaction = async (wallet, transaction) => {
     const newWalletBalance = math.add(wallet.balance, transaction.amount)
+
     await walletService.updateWalletBalance({
       id: wallet.id,
       balance: newWalletBalance

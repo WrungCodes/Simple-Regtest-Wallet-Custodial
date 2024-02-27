@@ -7,6 +7,11 @@ import cookieParser from 'cookie-parser'
 import passport from 'passport'
 import passportConfiguration from '../external/passport.js'
 import routesConfiguration from './routes/index.js'
+import { fileURLToPath } from 'url'
+import path from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const app = express()
 
@@ -24,6 +29,8 @@ app.use(
 )
 app.use(passport.initialize())
 app.use(morgan('combined'))
+
+app.use(express.static(path.join(__dirname, '../../public')))
 
 app.get('/test', (req, res) => res.send({ message: 'Server running' }))
 

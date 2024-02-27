@@ -13,24 +13,24 @@ import rateImplementationStrategy from '../../external/rate.js'
 import cryptoStrategyImplementation from '../../external/crypto-strategy/index.js'
 import config from '../../configs/index.js'
 
+const database = databaseSelector()
+const dbRepository = database.repository()
+
+const assetRepositoryImpl = assetRepository(dbRepository.asset)
+const assetServiceImpl = assetService(assetRepositoryImpl)
+
+const walletRepositoryImpl = walletRepository(dbRepository.wallet)
+const walletServiceImpl = walletService(walletRepositoryImpl)
+
+const addressRepositoryImpl = addressRepository(dbRepository.address)
+const addressServiceImpl = addressService(addressRepositoryImpl)
+
+const encryptionImplem = encryptionImplementation(config.ENCRYPTION_KEY, config.ENCRYPTION_IV, config.ENCRYPTION_METHOD)
+const cryptoStrategyImplem = cryptoStrategyImplementation()
+
+const rateImpl = rateImplementationStrategy()
+
 export default function assetRouter (express) {
-  const database = databaseSelector()
-  const dbRepository = database.repository()
-
-  const assetRepositoryImpl = assetRepository(dbRepository.asset)
-  const assetServiceImpl = assetService(assetRepositoryImpl)
-
-  const walletRepositoryImpl = walletRepository(dbRepository.wallet)
-  const walletServiceImpl = walletService(walletRepositoryImpl)
-
-  const addressRepositoryImpl = addressRepository(dbRepository.address)
-  const addressServiceImpl = addressService(addressRepositoryImpl)
-
-  const encryptionImplem = encryptionImplementation(config.ENCRYPTION_KEY, config.ENCRYPTION_IV, config.ENCRYPTION_METHOD)
-  const cryptoStrategyImplem = cryptoStrategyImplementation()
-
-  const rateImpl = rateImplementationStrategy()
-
   const router = express.Router()
 
   const controller = assetController(assetServiceImpl, walletServiceImpl, addressServiceImpl, cryptoStrategyImplem, encryptionImplem, rateImpl)

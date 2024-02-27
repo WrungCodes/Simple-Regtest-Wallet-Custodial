@@ -11,7 +11,7 @@ export default function processTradeTransfer (
 ) {
   const execute = async (userId, assetId, bankId, amount) => {
     const walletAssetAndAddress = await getWalletAssetAndAddressObject(userId, assetId)
-    const accountBalance = await getAndComputeTotalAvailableAccountBalance(bankId)
+    const accountBalance = await getAndComputeTotalAvailableAccountBalance(userId, bankId)
     validateThatUserHasEnoughBalance(amount, accountBalance)
     const charge = await createInitializeAndReturnChargeOnBank(bankId, userId, amount)
     const { rate, amountInCryptoCurrency } = await getAmountAndTradeRate(amount, walletAssetAndAddress.asset.symbol)
@@ -31,8 +31,8 @@ export default function processTradeTransfer (
     return walletAssetAndAddress
   }
 
-  const getAndComputeTotalAvailableAccountBalance = async (bankId) => {
-    const accountBalance = await getBankBalanceUsecase.execute(bankId)
+  const getAndComputeTotalAvailableAccountBalance = async (userId, bankId) => {
+    const accountBalance = await getBankBalanceUsecase.execute(userId, bankId)
     return accountBalance
   }
 
@@ -71,7 +71,7 @@ export default function processTradeTransfer (
 
     const transaction = await cryptoStrategyImplem(symbol).transfer(address, amount)
     await transferService.updateTransfer({ id: transfer.id, hash: transaction.hash, status: 'transaction_sent' })
-    return { hash: transaction.hash }
+    return { hash: transaction.hash, symbol, address }
   }
 
   return { execute }

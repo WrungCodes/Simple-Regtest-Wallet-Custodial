@@ -9,8 +9,22 @@ export default function getBanksAccount (bankService, plaidImpl) {
   }
 
   const loopAndGetBanksAccounts = async (allUserBanks) => {
-    const banksAccountsPromises = allUserBanks.map(bank => plaidImpl.getAccountsData(bank.accessToken))
-    const banksAccounts = await Promise.all(banksAccountsPromises)
+    const banksAccountsPromises = allUserBanks.map(bank =>
+      plaidImpl.getAccountsDataWithAccountIdFilter(bank.accessToken, bank.accountId)
+        .then(accountsData => ({
+          ...accountsData,
+          id: bank.id
+        }))
+    )
+    const banksAccountsNestedArray = await Promise.all(banksAccountsPromises)
+    return formatBankAccountResponse(banksAccountsNestedArray)
+  }
+
+  const formatBankAccountResponse = async (banksAccountsNestedArray) => {
+    const banksAccounts = []
+    for (const banksAccountsObject of banksAccountsNestedArray) {
+      banksAccounts.push({ id: banksAccountsObject.id, ...banksAccountsObject })
+    }
     return banksAccounts
   }
 

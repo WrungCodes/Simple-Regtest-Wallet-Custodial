@@ -8,7 +8,8 @@ describe('bankRepository', () => {
     mockRepository = {
       findManyBy: jest.fn(),
       findById: jest.fn(),
-      insert: jest.fn()
+      insert: jest.fn(),
+      insertMany: jest.fn()
     }
     bankRepo = bankRepository(mockRepository)
   })
@@ -34,6 +35,14 @@ describe('bankRepository', () => {
       const bank = { name: 'Test Bank', userId: 'testUserId' }
       await bankRepo.add(bank)
       expect(mockRepository.insert).toHaveBeenCalledWith(bank)
+    })
+  })
+
+  describe('addMultiple', () => {
+    it('calls insert many on the repository with the provided banks array', async () => {
+      const banks = [{ name: 'Test Bank', userId: 'testUserId' }, { name: 'Test Bank1', userId: 'testUserId1' }]
+      await bankRepo.addMultiple(banks)
+      expect(mockRepository.insertMany).toHaveBeenCalledWith(banks)
     })
   })
 })

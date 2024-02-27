@@ -31,10 +31,10 @@ export default function tradeController (
     )
 
     const transferDatails = await processTradeTransactionUseCase.execute(userId, assetId, bankId, amount)
-    res.json({ transferDatails })
+    res.json({ ...transferDatails })
 
     cryptoSendEvent.emit('send', {
-      symbol: transferDatails.asset.symbol,
+      symbol: transferDatails.symbol,
       hash: transferDatails.hash,
       address: transferDatails.address
     })

@@ -11,26 +11,40 @@ describe('getBankBalance', () => {
     }
     mockPlaidImpl = {
       getAccountBalances: jest.fn(),
-      sumAllAvailableBalances: jest.fn()
+      getAccountBalancesWithAccountIdFilter: jest.fn()
     }
     getBankBalanceInstance = getBankBalance(mockBankService, mockPlaidImpl)
   })
 
   it('successfully retrieves and calculates the balance for a specific bank', async () => {
     const bankId = 123
-    const bank = { id: bankId, accessToken: 'access-token' }
-    const accountBalances = [{ balance: 100 }, { balance: 200 }] // TODO
-    const totalBalance = 300
+    const userId = 123
+    const bank = { id: bankId, userId, accessToken: 'access-token', accountId: 'first' }
+
+    const filterAccountBalance = {
+      account_id: 'X74GeaeaZWFoXDmmKkPeUNenXpkxbBFbjrrxB',
+      balances: {
+        available: 100,
+        current: 110,
+        iso_currency_code: 'USD',
+        limit: null,
+        unofficial_currency_code: null
+      },
+      mask: '0000',
+      name: 'Plaid Checking',
+      official_name: 'Plaid Gold Standard 0% Interest Checking',
+      persistent_account_id: '8cfb8beb89b774ee43b090625f0d61d0814322b43bff984eaf60386e',
+      subtype: 'checking',
+      type: 'depository'
+    }
 
     mockBankService.retriveBankById.mockResolvedValue(bank)
-    mockPlaidImpl.getAccountBalances.mockResolvedValue(accountBalances)
-    mockPlaidImpl.sumAllAvailableBalances.mockReturnValue(totalBalance)
+    mockPlaidImpl.getAccountBalancesWithAccountIdFilter.mockResolvedValue(filterAccountBalance)
 
-    const result = await getBankBalanceInstance.execute(bankId)
+    const result = await getBankBalanceInstance.execute(userId, bankId)
 
     expect(mockBankService.retriveBankById).toHaveBeenCalledWith(bankId)
-    expect(mockPlaidImpl.getAccountBalances).toHaveBeenCalledWith(bank.accessToken)
-    expect(mockPlaidImpl.sumAllAvailableBalances).toHaveBeenCalledWith(accountBalances)
-    expect(result).toEqual(totalBalance)
+    expect(mockPlaidImpl.getAccountBalancesWithAccountIdFilter).toHaveBeenCalledWith(bank.accessToken, bank.accountId)
+    expect(result).toEqual(filterAccountBalance.balances.available)
   })
 })
