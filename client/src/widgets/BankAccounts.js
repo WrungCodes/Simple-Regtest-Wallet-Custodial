@@ -15,15 +15,23 @@ const BankAccounts = ({ accounts = [] }) => {
   const { bankId } = useSelector((state) => state.transaction);
   const dispatch = useDispatch();
 
-  const { open, ready } = usePlaidLink({
+  const { open } = usePlaidLink({
     token: linkToken,
     onSuccess: async (public_token, metadata) => {
+      // send public_token to server
       try {
         await addPublicToken({ publicToken: public_token });
         setLinkToken("");
       } catch (e) {
       }
-    }
+      setCreatingLink(false);
+    },
+    onExit: async () => {
+      setCreatingLink(false);
+    },
+    onLoad: () => {
+      setCreatingLink(false);
+    },
   });
 
   const handleGenerateLinkToken = useCallback(async () => {
@@ -33,13 +41,13 @@ const BankAccounts = ({ accounts = [] }) => {
       setLinkToken(response.data.link);
     } catch (e) {
     }
-    setCreatingLink(false)
   }, [initBankLink]);
 
   useEffect(() => {
-    handleGenerateLinkToken()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (linkToken) {
+      open();
+    }
+  }, [linkToken, open]);
 
   return (
     <div className="card border border-[rgba(255,255,255,0.2)] w-full min-h-[300px] h-full">
@@ -85,8 +93,8 @@ const BankAccounts = ({ accounts = [] }) => {
             <div className="text-center">
               <button
                 className="btn mt-4"
-                disabled={!ready}
-                onClick={() => open()}
+                disabled={creatingLink}
+                onClick={handleGenerateLinkToken}
               >
                 {creatingLink ? (
                   <span className="loading loading-spinner loading-md"></span>
