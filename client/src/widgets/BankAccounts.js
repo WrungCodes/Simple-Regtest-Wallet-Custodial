@@ -15,23 +15,23 @@ const BankAccounts = ({ accounts = [] }) => {
   const { bankId } = useSelector((state) => state.transaction);
   const dispatch = useDispatch();
 
-  const { open } = usePlaidLink({
+  const { open, ready } = usePlaidLink({
     token: linkToken,
     onSuccess: async (public_token, metadata) => {
       // send public_token to server
       try {
         await addPublicToken({ publicToken: public_token });
-        setLinkToken("");
+        // setLinkToken("");
       } catch (e) {
       }
-      setCreatingLink(false);
+      // setCreatingLink(false);
     },
-    onExit: async () => {
-      setCreatingLink(false);
-    },
-    onLoad: () => {
-      setCreatingLink(false);
-    },
+    // onExit: async () => {
+    //   setCreatingLink(false);
+    // },
+    // onLoad: () => {
+    //   setCreatingLink(false);
+    // },
   });
 
   const handleGenerateLinkToken = useCallback(async () => {
@@ -44,10 +44,13 @@ const BankAccounts = ({ accounts = [] }) => {
   }, [initBankLink]);
 
   useEffect(() => {
-    if (linkToken) {
-      open();
-    }
-  }, [linkToken, open]);
+    const createLinkToken = async () => {
+      const response = await initBankLink();
+      setLinkToken(response.data.link);
+    };
+    createLinkToken();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="card border border-[rgba(255,255,255,0.2)] w-full min-h-[300px] h-full">
@@ -93,14 +96,15 @@ const BankAccounts = ({ accounts = [] }) => {
             <div className="text-center">
               <button
                 className="btn mt-4"
-                disabled={creatingLink}
-                onClick={handleGenerateLinkToken}
+                disabled={!ready}
+                onClick={() => open()}
               >
-                {creatingLink ? (
+                  " Link Account"
+                {/* {creatingLink ? (
                   <span className="loading loading-spinner loading-md"></span>
                 ) : (
                   " Link Account"
-                )}
+                )} */}
               </button>
             </div>
           </div>
