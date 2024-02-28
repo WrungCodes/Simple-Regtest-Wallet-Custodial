@@ -21,17 +21,14 @@ const BankAccounts = ({ accounts = [] }) => {
       // send public_token to server
       try {
         await addPublicToken({ publicToken: public_token });
-        // setLinkToken("");
+        setLinkToken("");
       } catch (e) {
       }
-      // setCreatingLink(false);
+      setCreatingLink(false);
     },
-    // onExit: async () => {
-    //   setCreatingLink(false);
-    // },
-    // onLoad: () => {
-    //   setCreatingLink(false);
-    // },
+    onExit: async () => {
+      setCreatingLink(false);
+    },
   });
 
   const handleGenerateLinkToken = useCallback(async () => {
@@ -44,13 +41,14 @@ const BankAccounts = ({ accounts = [] }) => {
   }, [initBankLink]);
 
   useEffect(() => {
-    const createLinkToken = async () => {
-      const response = await initBankLink();
-      setLinkToken(response.data.link);
-    };
-    createLinkToken();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (ready && linkToken) {
+      open();
+    }
+
+    if(!ready && linkToken){
+      handleGenerateLinkToken()
+    }
+  }, [ready, linkToken, open]);
 
   return (
     <div className="card border border-[rgba(255,255,255,0.2)] w-full min-h-[300px] h-full">
@@ -96,15 +94,14 @@ const BankAccounts = ({ accounts = [] }) => {
             <div className="text-center">
               <button
                 className="btn mt-4"
-                disabled={!ready}
-                onClick={() => open()}
+                disabled={creatingLink}
+                onClick={handleGenerateLinkToken}
               >
-                  " Link Account"
-                {/* {creatingLink ? (
+                {creatingLink ? (
                   <span className="loading loading-spinner loading-md"></span>
                 ) : (
                   " Link Account"
-                )} */}
+                )}
               </button>
             </div>
           </div>
