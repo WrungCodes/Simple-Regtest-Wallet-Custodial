@@ -90,7 +90,7 @@ const BankAccounts = ({ accounts = [] }) => {
             <div className="text-center">
               <button
                 className="btn mt-4"
-                disabled={!ready || creatingLink}
+                disabled={creatingLink}
                 onClick={handleGenerateLinkToken}
               >
                 {creatingLink ? (
