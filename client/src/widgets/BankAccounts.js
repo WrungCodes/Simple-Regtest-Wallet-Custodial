@@ -44,10 +44,6 @@ const BankAccounts = ({ accounts = [] }) => {
     if (ready && linkToken) {
       open();
     }
-
-    if(!ready && linkToken){
-      handleGenerateLinkToken()
-    }
   }, [ready, linkToken, open]);
 
   return (
@@ -94,7 +90,7 @@ const BankAccounts = ({ accounts = [] }) => {
             <div className="text-center">
               <button
                 className="btn mt-4"
-                disabled={creatingLink}
+                disabled={!ready || creatingLink}
                 onClick={handleGenerateLinkToken}
               >
                 {creatingLink ? (
