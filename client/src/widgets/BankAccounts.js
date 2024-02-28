@@ -41,7 +41,7 @@ const BankAccounts = ({ accounts = [] }) => {
   }, [initBankLink]);
 
   useEffect(() => {
-    if (ready && linkToken) {
+    if (linkToken) {
       open();
     }
   }, [ready, linkToken, open]);
