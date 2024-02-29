@@ -21,7 +21,7 @@ const HomePage = () => {
   return (
     <div className="relative h-full w-full">
       <div className="flex items-center justify-between px-8 pt-6 absolute w-full top-0">
-        <p className="text-2xl font-semibold text-white">
+        <p className="text-2xl font-semibold dark:text-white">
           Hello {data && data.user && data.user.name}
         </p>
 

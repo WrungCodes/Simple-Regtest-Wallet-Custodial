@@ -31,7 +31,7 @@ const RegisterPage = () => {
         </Link>
       </div>
       <div className="h-full w-full flex items-center justify-center -mt-10">
-        <div className="card max-w-[500px] md:card-normal card-compact mx-5 md:mx-0 w-full border border-[rgba(255,255,255,0.2)]">
+        <div className="card max-w-[500px] md:card-normal card-compact mx-5 md:mx-0 w-full border dark:border-[rgba(255,255,255,0.2)]">
           <div className="card-body">
             <div>
               <div className="card-title">

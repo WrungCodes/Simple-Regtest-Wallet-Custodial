@@ -100,7 +100,7 @@ const TransferForm = ({ asset = {} }) => {
   }, [rate]);
 
   return (
-    <div className="card border border-[rgba(255,255,255,0.2)] h-full">
+    <div className="card border dark:border-[rgba(255,255,255,0.2)] h-full">
       <div className="card-body relative">
         <button
           className="absolute top-3 right-3 flex gap-1"
@@ -144,7 +144,7 @@ const TransferForm = ({ asset = {} }) => {
               <input
                 type="number"
                 placeholder="0.000000"
-                className={`input input-bordered w-full text-white ${
+                className={`input input-bordered w-full dark:text-white ${
                   error ? "input-error" : amount ? "input-primary" : ""
                 }`}
                 value={amount}
@@ -167,7 +167,7 @@ const TransferForm = ({ asset = {} }) => {
                 {asset.symbol}
               </div>
               <div className="rounded-lg px-4 py-3 bg-[rgba(0,0,0,0.05)] flex items-center justify-between">
-                <p className="text-white ">{assetEquivalent}</p>
+                <p className="dark:text-white ">{assetEquivalent}</p>
                 <p className="text-right">{asset.symbol}</p>
               </div>
             </div>

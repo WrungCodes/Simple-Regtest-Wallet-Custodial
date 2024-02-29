@@ -98,10 +98,10 @@ const BankAccounts = ({ accounts = [] }) => {
   }, [ready, linkToken, open]);
 
   return (
-    <div className="card border border-[rgba(255,255,255,0.2)] w-full min-h-[300px] h-full">
+    <div className="card border dark:border-[rgba(255,255,255,0.2)] w-full min-h-[300px] h-full">
       <div className="card-body">
         <div>
-          <p className="text-xl font-bold text-white grow-0">Bank accounts</p>
+          <p className="text-xl font-bold dark:text-white grow-0">Bank accounts</p>
         </div>
 
         <div className="overflow-auto max-h-[350px] no-scrollbar">
@@ -109,13 +109,13 @@ const BankAccounts = ({ accounts = [] }) => {
             {accounts.length ? (
               <ul className="h-full w-full">
                 {accounts.map(({ official_name, balances, name, id }) => (
-                  <li className="flex items-center justify-between pb-4 border-b border-[rgba(255,255,255,0.2)] [&:not(:first-child)]:pt-4">
+                  <li className="flex items-center justify-between pb-4 dark:border-b dark:border-[rgba(255,255,255,0.2)] [&:not(:first-child)]:pt-4">
                     <div className="text-xs grid gap-1">
                       <p className="font-bold">{official_name}</p>
                       <p>{name}</p>
                       <p>
                         Available Balance:{" "}
-                        <b className="text-white">
+                        <b className="dark:text-white">
                           {balances.available}
                           {balances.iso_currency_code}
                         </b>
